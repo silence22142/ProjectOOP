@@ -1,1 +1,1 @@
-# ProjectOOP Класс для работы с SQLite
+# ProjectOOP Класс и контроллер для работы с SQLite DB
