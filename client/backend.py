@@ -1,5 +1,6 @@
 import socket
 sock = socket.socket()
+sock.connect(("localhost", 9090))
 
 
 class Data:
@@ -10,12 +11,7 @@ class Data:
         self._get_game_data()
 
     def _get_game_data(self):
-        file = open('rates.txt', 'r')
-        send_data = file.readline()
-        sock.connect(("localhost", 9090))
-        sock.send(send_data.encode())
         data = sock.recv(4096).decode()
-        sock.close()
         items = data.split(":")
         for item in items:
             game = item.split("/")
@@ -29,13 +25,13 @@ class Data:
         self.rates[data[0]] = str(rate)
 
     def save_rates(self):
-        file = open('rates.txt', 'w')
         data = []
         for game in self.rates:
             data.append(self.rates[game] + ":" + game)
         record = "/".join(data)
         if record:
-            file.write(record)
+            sock.send(record.encode())
+            sock.close()
         else:
-            file.write("No data")
-        file.close()
+            sock.send("No data".encode())
+            sock.close()
