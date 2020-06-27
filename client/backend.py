@@ -15,7 +15,6 @@ class Data:
         sock.connect(("localhost", 9090))
         sock.send(send_data.encode())
         data = sock.recv(4096).decode()
-        sock.shutdown(socket.SHUT_RDWR)
         sock.close()
         items = data.split(":")
         for item in items:
@@ -38,5 +37,5 @@ class Data:
         if record:
             file.write(record)
         else:
-            file.write("1")
+            file.write("No data")
         file.close()
