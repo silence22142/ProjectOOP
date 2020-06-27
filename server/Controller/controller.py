@@ -5,6 +5,15 @@ class Controller:
     def __init__(self):
         self.data_b = database.Database("gamedatabase.db")
 
+    def add_new_game(self, new_id, name, release_date, genre, publisher, developer, pc, ps4, xbox_one, user_rate, critic_rate):
+        self.data_b.write("games", ["id", "name", "release_date", "genre"], [new_id, name, release_date, genre])
+        self.data_b.write("platforms", ["id", "name", "pc", "ps4", "xbox_one"], [new_id, name, pc, ps4, xbox_one])
+        self.data_b.write("publishers", ["id", "name", "publisher", "developer"], [new_id, name, publisher, developer])
+        self.data_b.write("rates", ["id", "name", "critic_rate", "user_rate"], [new_id, name, critic_rate, user_rate])
+        self.data_b.write("feedback", ["id", "name",
+                                       "one_star_review", "second_star_review", "three_star_review",
+                                       "four_star_review", "five_star_review"], [new_id, name, 0, 0, 0, 0, 0])
+
     def get_all_games(self):
         raw_list_games = self.data_b.get_all("games")
         complete_list_games = []
