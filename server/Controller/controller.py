@@ -1,4 +1,4 @@
-from Database import database
+import database
 
 
 class Controller:
@@ -6,13 +6,25 @@ class Controller:
         self.data_b = database.Database("gamedatabase.db")
 
     def add_new_game(self, new_id, name, release_date, genre, publisher, developer, pc, ps4, xbox_one, user_rate, critic_rate):
-        self.data_b.write("games", ["id", "name", "release_date", "genre"], [new_id, name, release_date, genre])
-        self.data_b.write("platforms", ["id", "name", "pc", "ps4", "xbox_one"], [new_id, name, pc, ps4, xbox_one])
-        self.data_b.write("publishers", ["id", "name", "publisher", "developer"], [new_id, name, publisher, developer])
-        self.data_b.write("rates", ["id", "name", "critic_rate", "user_rate"], [new_id, name, critic_rate, user_rate])
-        self.data_b.write("feedback", ["id", "name",
-                                       "one_star_review", "second_star_review", "three_star_review",
-                                       "four_star_review", "five_star_review"], [new_id, name, 0, 0, 0, 0, 0])
+        self.data_b.write("games", "id, name, release_date, genre", ", ".join([new_id, name, release_date, genre]))
+        if pc == "Available":
+            pc = 1
+        else:
+            pc = 0
+        if ps4 == "Available":
+            ps4 = 1
+        else:
+            ps4 = 0
+        if xbox_one == "Available":
+            xbox_one = 1
+        else:
+            xbox_one = 0
+        self.data_b.write("platforms", "id, name, pc, ps4, xbox_one", ", ".join([new_id, name, str(pc), str(ps4), str(xbox_one)]))
+        self.data_b.write("publishers", "id, name, publisher, developer", ", ".join([new_id, name, publisher, developer]))
+        self.data_b.write("rates", "id, name, critic_rate, user_rate", ", ".join([new_id, name, critic_rate, user_rate]))
+        self.data_b.write("feedback", "id, name, \
+                                       one_star_review, two_star_review, three_star_review, \
+                                       four_star_review, five_star_review", ", ".join([new_id, name, "0", "0", "0", "0", "0"]))
 
     def get_all_games(self):
         raw_list_games = self.data_b.get_all("games")
@@ -77,3 +89,5 @@ class Controller:
         except ZeroDivisionError:
             average_user_score = "No rates"
             return average_user_score
+
+
